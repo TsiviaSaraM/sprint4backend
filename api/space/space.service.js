@@ -11,7 +11,7 @@ module.exports = {
   remove,
   update,
   add,
-  addMsg,
+  // addMsg,
 };
 
 async function query(filterBy = {}) {
@@ -28,19 +28,19 @@ async function query(filterBy = {}) {
 
     // TODO can remove this later - this is for testing with postman
     // spaces = spaces.map(space => {
-    //     var news = {}
-    //     news.capacity = space.capacity;
-    //     news.type = space.type;
-    //     news.loc={}
-    //     news.loc.country = space.loc.country
-    //     news.loc.address = space.loc.address
-    //     news._id = space._id
-    //     space.reviews = []
-    //     space.description = 'describe'
-    //     space.imgUrls = [],
-    //     space.amenities = {}
-    //     space.likedByUserIds = {}
-    //     space.host = {}
+    // var news = {}
+    // news.capacity = space.capacity;
+    // news.type = space.type;
+    // news.loc={}
+    // news.loc.country = space.loc.country
+    // news.loc.address = space.loc.address
+    // news._id = space._id
+    // space.reviews = []
+    // space.description = 'describe'
+    // space.imgUrls = [],
+    // space.amenities = {}
+    // space.likedByUserIds = {}
+    // space.host = {}
     //     return news
     // })
 
@@ -163,20 +163,20 @@ function _buildCriteria(filterBy) {
   return criteria;
 }
 
-async function addMsg(spaceId, msg) {
-  try {
-    let space = await getById(spaceId);
-    space.msgs.push(msg);
-    space = await update(space);
-    return space;
-  } catch (err) {
-    logger.error('cannot addMsg in space.service', err);
-    throw err;
-  }
-}
+// async function addMsg(spaceId, msg){
+//     try {
+//         let space = await getById(spaceId)
+//         space.msgs.push(msg)
+//         space = await update(space)
+//         return space
+//     } catch (err) {
+//         logger.error('cannot addMsg in space.service', err)
+//         throw err
+//     }
+
+// }
 
 function _buildCriteria(filterBy) {
-  console.log('filter', filterBy);
   // filterBy.location = '';
   // filterBy.type='';
   // filterBy.capacity = 0;
@@ -207,6 +207,5 @@ function _buildCriteria(filterBy) {
     criteria.$or = [orCriteria1, orCriteria2];
   }
   // return { capacity: { '$gte': 0 } }
-  console.log('criteria', criteria);
   return criteria;
 }

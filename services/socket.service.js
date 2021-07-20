@@ -7,12 +7,12 @@ const logger = require('./logger.service');
 var gIo = null
 var gSocketBySessionIdMap = {}
 var gMsgHistory = [];
+gSpaceViews = {}
+
 
 function connectSockets(http, session) {
-
     console.log('conecting sockets');
     gIo = require('socket.io')(http);
-
     const sharedSession = require('express-socket.io-session');
 
     gIo.use(sharedSession(session, {
@@ -24,28 +24,36 @@ function connectSockets(http, session) {
         // TODO: emitToUser feature - need to tested for CaJan21
         // if (socket.handshake?.session?.user) socket.join(socket.handshake.session.user._id)
         socket.on('disconnect', socket => {
-            console.log('Someone disconnected')
+            console.log('Someone disconnected', gSpaceViews)
             if (socket.handshake) {
                 gSocketBySessionIdMap[socket.handshake.sessionID] = null
             }
         })
-        socket.emit('chat-history', gMsgHistory)
-        socket.on('chat topic', topic => {
-            console.log('setting chat topic');
-            if (socket.myTopic === topic) return;
+        // socket.emit('chat-history', gMsgHistory)
+        socket.on('chat topic', spaceId => {
+            console.log('setting chat topic', spaceId);
+            if (socket.myTopic === spaceId) return;
             if (socket.myTopic) {
                 socket.leave(socket.myTopic)
             }
-            socket.join(topic)
+            socket.join(spaceId)
             // logger.debug('Session ID is', socket.handshake.sessionID)
-            socket.myTopic = topic
+            socket.myTopic = spaceId
+
+            //set spaceViews count
+            if (gSpaceViews[spaceId]) gSpaceViews[spaceId] = gSpaceViews[spaceId] + 1
+            else gSpaceViews[spaceId] = 1;
+            gIo.emit('viewingSpace', gSpaceViews[spaceId]) //TODO remove this for details page
+            console.log('someone is viewing this space', gSpaceViews[spaceId], gSpaceViews);
         })
         socket.on('chat newMsg', msg => {
-            spaceService.addMsg(socket.myTopic, msg)
             // emits to all sockets:
-            gIo.emit('chat addMsg', msg)
+            // gIo.emit('chat addMsg', msg)
+
             // emits only to sockets in the same room
-            // gIo.to(socket.myTopic).emit('chat addMsg', msg)
+            gIo.to(socket.myTopic).emit('chat addMsg', msg)
+
+            socket.broadcast.emit('show-typer', 'user', socket.myTopic)
         })
         socket.on('typing', user => {
             console.log(user);
@@ -53,9 +61,20 @@ function connectSockets(http, session) {
             // gIo.emit('show-typer', user)
         })
 
-        socket.on('spaceView', msg => {
-            console.log('someone is viewing this space');
-            gIo.emit('viewingSpace')
+        // socket.on('spaceView', spaceId => {
+        //     console.log(spaceId);
+        //     console.log(socket.myTopic, '****');
+        //     if (gSpaceViews[spaceId]) gSpaceViews[spaceId] = gSpaceViews[spaceId] + 1
+        //     else gSpaceViews[spaceId] = 1;
+        //     console.log('someone is viewing this space', gSpaceViews[spaceId], gSpaceViews);
+        //     gIo.emit('viewingSpace', gSpaceViews[spaceId]) //TODO remove this for details page
+        //     // gIo.to(socket.myTopic).emit('viewingSpace', gSpaceViews[spaceId]) //TODO use this one on details page
+        // })
+        socket.on('removeSpaceView', spaceId => {
+            console.log('removing space view**********', spaceId);
+            gSpaceViews[spaceId] = gSpaceViews[spaceId] - 1
+            // gIo.emit('viewingSpace', gSpaceViews[spaceId]) 
+            gIo.to(socket.myTopic).emit('spaceReviewRemoved')
         })
 
 
