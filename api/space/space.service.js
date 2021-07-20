@@ -11,8 +11,11 @@ module.exports = {
   remove,
   update,
   add,
+//   getSpaceByHost,
   // addMsg,
 };
+
+
 
 async function query(filterBy = {}) {
   const criteria = _buildCriteria(filterBy);
@@ -27,22 +30,24 @@ async function query(filterBy = {}) {
     });
 
     // TODO can remove this later - this is for testing with postman
-    // spaces = spaces.map(space => {
-    // var news = {}
+    spaces = spaces.map(space => { return space;
+    var news = {}
     // news.capacity = space.capacity;
     // news.type = space.type;
     // news.loc={}
     // news.loc.country = space.loc.country
     // news.loc.address = space.loc.address
-    // news._id = space._id
+    news._id = space._id
+    news.host = space.host._id
     // space.reviews = []
     // space.description = 'describe'
     // space.imgUrls = [],
     // space.amenities = {}
     // space.likedByUserIds = {}
     // space.host = {}
-    //     return news
-    // })
+    news.name = space.name
+        return news
+    })
 
     return spaces;
   } catch (err) {
@@ -76,6 +81,7 @@ async function remove(spaceId) {
   try {
     const collection = await dbService.getCollection('space');
     await collection.deleteOne({ _id: ObjectId(spaceId) });
+    
   } catch (err) {
     logger.error(`cannot remove space ${spaceId}`, err);
     throw err;
@@ -182,8 +188,13 @@ function _buildCriteria(filterBy) {
   // filterBy.capacity = 0;
   // filterBy.country = ''
   // filterBy.numGuests = "8";
+//   filterBy.hostId = 'u101'
 
   let criteria = {};
+    if (filterBy.hostId){
+        criteria['host._id'] = filterBy.hostId
+    }
+
   if (filterBy.type && filterBy.type !== 'all') {
     criteria.type = filterBy.type;
   }

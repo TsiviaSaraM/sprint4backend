@@ -17,5 +17,6 @@ router.post('/', addSpace)
 // router.put('/:id',  requireAuth, updateSpace)
 // router.delete('/:id',  requireAuth, requireAdmin, deleteSpace)
 router.delete('/:id', deleteSpace)
+// router.get('/host/:hostId', getSpaceByHost)
 
 module.exports = router

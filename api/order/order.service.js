@@ -33,8 +33,8 @@ async function getById(orderId) {
     console.log('orderId**', ObjectId(orderId));
     try {
         const collection = await dbService.getCollection('order')
-        const order = await collection.find({ hostId: 'u102'})
-        // const order = await collection.findOne({ "_id": orderId })
+        // const order = await collection.find({ hostId: 'u102'})
+        const order = await collection.findOne({ "_id": orderId })
 
         // order.givenOrders = await orderService.query({ byOrderId: order._id })
         // order.givenOrders = order.givenOrders.map(order => {
@@ -62,7 +62,8 @@ async function getByOrdername(ordername) {
 async function remove(orderId) {
     try {
         const collection = await dbService.getCollection('order')
-        await collection.deleteOne({ '_id': ObjectId(orderId) })
+        await collection.deleteOne({ _id: ObjectId(orderId) });
+        // await collection.deleteOne({ '_id': ObjectId(orderId) })
     } catch (err) {
         logger.error(`cannot remove order ${orderId}`, err)
         throw err

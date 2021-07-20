@@ -15,10 +15,6 @@ async function getSpace(req, res) {
 async function getSpaces(req, res) {
     try {
         const filterBy = req.query;
-        // const filterBy = {
-        //     txt: req.query?.txt || '',
-        //     minBalance: +req.query?.minBalance || 0
-        // }
         const spaces = await spaceService.query(filterBy)
         res.send(spaces)
     } catch (err) {
@@ -26,6 +22,21 @@ async function getSpaces(req, res) {
         res.status(500).send({ err: 'Failed to get spaces' })
     }
 }
+
+// async function getSpaceByHost(req,res){
+
+//     hostId = 'u101'
+//     const filterBy = {
+//         hostId: "u101"
+//     }
+//     try{
+//         const spaces = await spaceService.query(filterBy)
+//         res.send(spaces)
+//     } catch (err) {
+//         console.log('getSpacesForHost', err);
+//         throw err;
+//     }
+// }
 
 async function deleteSpace(req, res) {
     try {
@@ -38,11 +49,9 @@ async function deleteSpace(req, res) {
 }
 
 async function updateSpace(req, res) {
-    // console.log('updating space in controller**************', req.body);
     try {
         const space = req.body
         const savedSpace = await spaceService.update(space)
-        console.log('savedSpace',savedSpace);
         res.send(savedSpace)
         // socketService.broadcast({type: 'space-updated', data: space, to:savedSpace._id})
         // return savedSpace
@@ -87,6 +96,8 @@ async function addReview(){
     }
 }
 
+
+
 module.exports = {
     getSpace,
     getSpaces,
@@ -94,4 +105,5 @@ module.exports = {
     updateSpace,
     addSpace,
     addReview,
+    
 }
