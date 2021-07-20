@@ -21,28 +21,26 @@ async function query(filterBy = {}) {
         const collection = await dbService.getCollection('space')
         var spaces = await collection.find(criteria).toArray()
         spaces = spaces.sort((space1, space2) => {
-            // return filterService.test()
-            // return filterService.getAverageReview(space2) - filterService.getAverageReview(space1)
-            // return space1.capacity - space2.capacity
+            return filterService.getAverageReview(space2) - filterService.getAverageReview(space1)
         })
 
         // TODO can remove this later - this is for testing with postman
-        spaces = spaces.map(space => {
-            var news = {}
-            news.capacity = space.capacity;
-            news.type = space.type;
-            news.loc={}
-            news.loc.country = space.loc.country
-            news.loc.address = space.loc.address
-            news._id = space._id
-            space.reviews = []
-            space.description = 'describe'
-            space.imgUrls = [],
-            space.amenities = {}
-            space.likedByUserIds = {}
-            space.host = {}
-            return news
-        })
+        // spaces = spaces.map(space => {
+        //     var news = {}
+        //     news.capacity = space.capacity;
+        //     news.type = space.type;
+        //     news.loc={}
+        //     news.loc.country = space.loc.country
+        //     news.loc.address = space.loc.address
+        //     news._id = space._id
+        //     space.reviews = []
+        //     space.description = 'describe'
+        //     space.imgUrls = [],
+        //     space.amenities = {}
+        //     space.likedByUserIds = {}
+        //     space.host = {}
+        //     return news
+        // })
         
         return spaces
     } catch (err) {
@@ -173,31 +171,34 @@ async function addMsg(spaceId, msg){
 }
 
 function _buildCriteria(filterBy) {
-    filterBy.location = 'qwe';
-    filterBy.type='all';
-    filterBy.capacity = 0;
-    filterBy.country = ''
+    console.log('filter', filterBy);
+    // filterBy.location = '';
+    // filterBy.type='';
+    // filterBy.capacity = 0;
+    // filterBy.country = ''
+    // filterBy.numGuests = "8";
 
     let criteria = {}
-    // if (filterBy.type && filterBy.type !== 'all') {
-    //     criteria.type = filterBy.type
-    //  }
-    //  if (filterBy.capacity) {
-    //    criteria.capacity = { $gte: filterBy.capacity }
-    // }
+    if (filterBy.type && filterBy.type !== 'all') {
+        criteria.type = filterBy.type
+     }
+     if (filterBy.numGuests) {
+    //    criteria.capacity = { $gte: filterBy.numGuests }
+       const capacity = parseInt(filterBy.numGuests, 10)
+       criteria.capacity = { $gte: capacity }
+    }
 
-    // if (filterBy.country){
-    //     criteria['loc.country'] = {$regex: filterBy.country, $options: 'i'}
+    if (filterBy.country){
+        criteria['loc.country'] = {$regex: filterBy.country, $options: 'i'}
+    }
 
-    // }
+    if (filterBy.location){
+        const orCriteria1 = {'loc.address':{$regex: filterBy.location, $options: 'i'} }
+        const orCriteria2 = {'loc.country':{$regex: filterBy.location, $options: 'i'} }
+        criteria.$or = [orCriteria1, orCriteria2 ]
 
-    // if (filterBy.location){
-    //     const orCriteria1 = {'loc.address':{$regex: filterBy.location, $options: 'i'} }
-    //     const orCriteria2 = {'loc.country':{$regex: filterBy.location, $options: 'i'} }
-    //     criteria.$or = [orCriteria1, orCriteria2 ]
-
-    // }
-
+    }
+// return { capacity: { '$gte': 0 } }
 console.log('criteria', criteria);
     return criteria
  }
