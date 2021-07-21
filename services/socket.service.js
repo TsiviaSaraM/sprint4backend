@@ -21,8 +21,35 @@ function connectSockets(http, session) {
     gIo.on('connection', socket => {
         console.log('New socket - socket.handshake.sessionID', socket.handshake.sessionID)
         gSocketBySessionIdMap[socket.handshake.sessionID] = socket
-        // TODO: emitToUser feature - need to tested for CaJan21
         // if (socket.handshake?.session?.user) socket.join(socket.handshake.session.user._id)
+        
+        socket.on('newViewer', spaceId => {
+            //join the room
+            console.log('setting chat topic', spaceId, socket.room);
+            if (socket.room === spaceId) return;
+            if (socket.room) {
+                socket.leave(socket.room)
+            }
+            
+            socket.join(spaceId)
+            console.log('setting chat topic', spaceId, socket.topic);
+
+            //set spaceViews count
+            if (gSpaceViews[spaceId]) gSpaceViews[spaceId] = gSpaceViews[spaceId] + 1
+            else gSpaceViews[spaceId] = 1;
+            gIo.to(socket.room).emit('updateViewerCount', gSpaceViews[spaceId]) 
+            console.log('someone is viewing this space', gSpaceViews[spaceId], gSpaceViews);
+        })
+        socket.on('removeViewer', spaceId => {
+            console.log('removing space view', spaceId, gSpaceViews);
+            gSpaceViews[spaceId] = gSpaceViews[spaceId] - 1
+            gIo.to(socket.room).emit('updateViewerCount', gSpaceViews[spaceId]) 
+            
+            // if (socket.handshake) {
+            //     gSocketBySessionIdMap[socket.handshake.sessionID] = null
+            // }
+        })
+
         socket.on('disconnect', socket => {
             console.log('Someone disconnected', gSpaceViews)
             if (socket.handshake) {
@@ -71,9 +98,8 @@ function connectSockets(http, session) {
         //     // gIo.to(socket.myTopic).emit('viewingSpace', gSpaceViews[spaceId]) //TODO use this one on details page
         // })
         socket.on('removeSpaceView', spaceId => {
-            console.log('removing space view**********', spaceId);
+            console.log('removing space view', spaceId);
             gSpaceViews[spaceId] = gSpaceViews[spaceId] - 1
-            // gIo.emit('viewingSpace', gSpaceViews[spaceId]) 
             gIo.to(socket.myTopic).emit('spaceReviewRemoved')
         })
 
