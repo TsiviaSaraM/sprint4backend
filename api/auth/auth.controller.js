@@ -6,8 +6,6 @@ async function login(req, res) {
     try {
         const user = await authService.login(username, password)
         req.session.user = user
-        // console.log('logged in', res.json(user));
-        console.log('successful login');
         res.json(user)
     } catch (err) {
         logger.error('Failed to Login ' + err)
@@ -15,12 +13,11 @@ async function login(req, res) {
     }
 }
 
-//WORKS :-)
 async function signup(req, res) {
     try {
         const { username, password, fullname, imgUrl, isHost } = req.body
         // Never log passwords
-        // logger.debug(fullname + ', ' + username + ', ' + password)
+        // logger.debug(fullname + ', ' + username + ', ' + password) //QUQU
         const account = await authService.signup(username, password, fullname, imgUrl, isHost)
         logger.debug(`auth.route - new account created: ` + JSON.stringify(account))
         const user = await authService.login(username, password)
@@ -34,7 +31,7 @@ async function signup(req, res) {
 
 async function logout(req, res){
     try {
-        // req.session.destroy()
+        // req.session.destroy() //QUQU
         req.session.user = null;
         res.send({ msg: 'Logged out successfully' })
     } catch (err) {

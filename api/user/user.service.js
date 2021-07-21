@@ -91,7 +91,6 @@ async function update(user) {
     }
 }
 
-//WORKS :-)
 async function add(user) {
     try {
         // peek only updatable fields!
@@ -113,6 +112,7 @@ async function add(user) {
     }
 }
 
+//not using yet
 function _buildCriteria(filterBy) {
     const criteria = {}
     if (filterBy.txt) {

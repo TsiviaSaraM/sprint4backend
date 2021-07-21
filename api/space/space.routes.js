@@ -6,7 +6,6 @@ const router = express.Router()
 // middleware that is specific to this router
 // router.use(requireAuth)
 
-//ququ how do I add filter here
 router.get('/', getSpaces)
 router.get('/:id', getSpace)
 // router.put('/:id', requireAuth,  updateSpace)
