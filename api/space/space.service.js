@@ -30,7 +30,8 @@ async function query(filterBy = {}) {
     });
 
     // TODO can remove this later - this is for testing with postman
-    spaces = spaces.map(space => { return space;
+    spaces = spaces.map(space => { 
+      return space;
     var news = {}
     // news.capacity = space.capacity;
     // news.type = space.type;
@@ -39,7 +40,7 @@ async function query(filterBy = {}) {
     // news.loc.address = space.loc.address
     news._id = space._id
     news.host = space.host._id
-    // space.reviews = []
+    news.reviews = space.reviews.length
     // space.description = 'describe'
     // space.imgUrls = [],
     // space.amenities = {}
