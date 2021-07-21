@@ -3,7 +3,6 @@ const socketService = require('../../services/socket.service')
 const logger = require('../../services/logger.service')
 
 async function getOrder(req, res) {
-    console.log('*****', req.params.id);
     try {
         const orderId = req.params.id
         const order = await orderService.getById(orderId)
@@ -40,11 +39,9 @@ async function deleteOrder(req, res) {
 }
 
 async function updateOrder(req, res) {
-    console.log('updating order in controller**************', req.body.id);
     try {
         const order = req.body.id
         const savedOrder = await orderService.update(order)
-        console.log('savedOrder',savedOrder);
         res.send(savedOrder)
         // socketService.broadcast({type: 'order-updated', data: order, to:savedOrder._id})
         // return savedOrder
