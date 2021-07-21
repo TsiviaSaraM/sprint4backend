@@ -17,7 +17,6 @@ async function login(username, password) {
     return user
 }
 
-//WORKS :-)
 async function signup(username, password, fullname, imgUrl, isHost) {
     console.log('signing up in controller');
     const saltRounds = 10

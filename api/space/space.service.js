@@ -126,6 +126,7 @@ async function add(space) {
       description: space.description,
       capacity: space.capacity,
       amenities: space.amenities,
+      reviews: space.reviews || [],
       host: {
         _id: space.host._id,
         // _id: ObjectId(space.host._id),
@@ -140,7 +141,7 @@ async function add(space) {
         lng: space.loc.lng,
       },
       spaces: space.spaces,
-      likedByUserIds: space.likedByUserIds,
+      likedByUserIds: space.likedByUserIds || [],
     };
     const collection = await dbService.getCollection('space');
     await collection.insertOne(spaceToAdd);

@@ -23,21 +23,6 @@ async function getSpaces(req, res) {
     }
 }
 
-// async function getSpaceByHost(req,res){
-
-//     hostId = 'u101'
-//     const filterBy = {
-//         hostId: "u101"
-//     }
-//     try{
-//         const spaces = await spaceService.query(filterBy)
-//         res.send(spaces)
-//     } catch (err) {
-//         console.log('getSpacesForHost', err);
-//         throw err;
-//     }
-// }
-
 async function deleteSpace(req, res) {
     try {
         await spaceService.remove(req.params.id)
@@ -52,9 +37,8 @@ async function updateSpace(req, res) {
     try {
         const space = req.body
         const savedSpace = await spaceService.update(space)
-        res.send(savedSpace)
         // socketService.broadcast({type: 'space-updated', data: space, to:savedSpace._id})
-        // return savedSpace
+        res.send(savedSpace)
     } catch (err) {
         logger.error('Failed to update space', err)
         res.status(500).send({ err: 'Failed to update space' })
@@ -66,8 +50,8 @@ async function addSpace(req, res) {
     try {
         const space = req.body
         const savedSpace = await spaceService.add(space)
-        res.send(savedSpace)
         // socketService.broadcast({type: 'space-updated', data: space, to:savedSpace._id})
+        res.send(savedSpace)
     } catch (err) {
         logger.error('Failed to update space', err)
         res.status(500).send({ err: 'Failed to update space' })

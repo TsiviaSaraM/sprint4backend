@@ -1,8 +1,6 @@
 
 const dbService = require('../../services/db.service')
 const logger = require('../../services/logger.service')
-const orderService = require('../order/order.service')
-const filterService = require('../../services/filterService')
 const ObjectId = require('mongodb').ObjectId
 
 module.exports = {
@@ -29,19 +27,9 @@ async function query(filterBy = {}) {
 }
 
 async function getById(orderId) {
-    console.log('orderId**', orderId);
-    console.log('orderId**', ObjectId(orderId));
     try {
         const collection = await dbService.getCollection('order')
-        // const order = await collection.find({ hostId: 'u102'})
         const order = await collection.findOne({ "_id": orderId })
-
-        // order.givenOrders = await orderService.query({ byOrderId: order._id })
-        // order.givenOrders = order.givenOrders.map(order => {
-        //     delete order.byOrder
-        //     return order
-        // })
-
         return order
     } catch (err) {
         logger.error(`while finding order ${orderId}`, err)
@@ -63,7 +51,6 @@ async function remove(orderId) {
     try {
         const collection = await dbService.getCollection('order')
         await collection.deleteOne({ _id: ObjectId(orderId) });
-        // await collection.deleteOne({ '_id': ObjectId(orderId) })
     } catch (err) {
         logger.error(`cannot remove order ${orderId}`, err)
         throw err
@@ -71,14 +58,11 @@ async function remove(orderId) {
 }
 
 async function update(order) {
-    console.log('updating order in service**********', order);
     try {
         // peek only updatable fields!
         let orderToSave = order
         const collection = await dbService.getCollection('order')
         await collection.updateOne({ '_id': order._id }, { $set: {...orderToSave} })
-        // await collection.updateOne({ '_id': ObjectId(order._id) }, { $set: {...orderToSave} })
-        // console.log('orderToSave updated in service**********', order);
         return order;
     } catch (err) {
         logger.error(`cannot update order ${order._id}`, err)
@@ -120,7 +104,6 @@ function _buildCriteria(filterBy) {
 }
 
 async function addMsg(orderId, msg){
-    
     try {
         let order = await getById(orderId)
         order.msgs.push(msg)
@@ -130,11 +113,10 @@ async function addMsg(orderId, msg){
         logger.error('cannot addMsg in order.service', err)
         throw err
     }
-
 }
 
+//not using here because there is only 1 filter field in use
 function _buildCriteria(filterBy) {
-
     return {}
  }
 
