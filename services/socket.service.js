@@ -19,39 +19,58 @@ function connectSockets(http, session) {
         autoSave: true
     }));
     gIo.on('connection', socket => {
-        console.log('New socket - socket.handshake.sessionID', socket.handshake.sessionID)
+        console.log('New socket - .sessionID & socketid', socket.handshake.sessionID, socket.id)
         gSocketBySessionIdMap[socket.handshake.sessionID] = socket
         // if (socket.handshake?.session?.user) socket.join(socket.handshake.session.user._id)
         
+        socket.on("connect", () => {
+            console.log('socketid', socket.id); // ojIckSD2jqNzOqIrAGzL
+          });
+
         socket.on('newViewer', spaceId => {
             //join the room
-            console.log('setting chat topic', spaceId, socket.room);
-            if (socket.room === spaceId) return;
-            if (socket.room) {
-                socket.leave(socket.room)
+            console.log('setting chat topic', spaceId, socket.room1);
+            if (socket.room1 === spaceId) return;
+            if (socket.room1) {
+                socket.leave(socket.room1)
             }
-            
             socket.join(spaceId)
-            console.log('setting chat topic', spaceId, socket.topic);
+            console.log('setting chat topic', spaceId);
 
             //set spaceViews count
             if (gSpaceViews[spaceId]) gSpaceViews[spaceId] = gSpaceViews[spaceId] + 1
             else gSpaceViews[spaceId] = 1;
-            gIo.to(socket.room).emit('updateViewerCount', gSpaceViews[spaceId]) 
-            console.log('someone is viewing this space', gSpaceViews[spaceId], gSpaceViews);
+            gIo.emit('updateViewerCount', gSpaceViews[spaceId] + ' users are viewing this space', socket.id) 
+            console.log('someone is viewing this space', gSpaceViews);
+
+            //send socket id to host
+            gIo.emit
         })
         socket.on('removeViewer', spaceId => {
-            console.log('removing space view', spaceId, gSpaceViews);
+            console.log('spaceId in remove********', spaceId);
             gSpaceViews[spaceId] = gSpaceViews[spaceId] - 1
-            gIo.to(socket.room).emit('updateViewerCount', gSpaceViews[spaceId]) 
-            
-            // if (socket.handshake) {
-            //     gSocketBySessionIdMap[socket.handshake.sessionID] = null
-            // }
+            gIo.emit('updateViewerCount', gSpaceViews[spaceId] + ' users are viewing this space') 
+            console.log('someone is leaving this space******', gSpaceViews[spaceId], gSpaceViews);
+            if (socket.handshake) {
+                gSocketBySessionIdMap[socket.handshake.sessionID] = null
+            }
+        })
+        socket.on('joinChat', (socketId = null) => {
+            if (!socketId) socketId = socket.id
+            socket.join(socketId)
+            socket.emit('socketId', socketId)
         })
 
+        socket.on('send-msg', msg => {
+            console.log('received msg in socket:', socket.id);
+            gIo.emit('receive-msg',msg)
+        })
+
+        socket.on('newOrder', socket => {
+            socket.emit('newOrder', )
+        })
         socket.on('disconnect', socket => {
-            console.log('Someone disconnected', gSpaceViews)
+            console.log('Someone disconnected', socket)
             if (socket.handshake) {
                 gSocketBySessionIdMap[socket.handshake.sessionID] = null
             }
@@ -75,10 +94,10 @@ function connectSockets(http, session) {
         })
         socket.on('chat newMsg', msg => {
             // emits to all sockets:
-            // gIo.emit('chat addMsg', msg)
+            gIo.emit('chat addMsg', msg)
 
             // emits only to sockets in the same room
-            gIo.to(socket.myTopic).emit('chat addMsg', msg)
+            // gIo.to(socket.myTopic).emit('chat addMsg', msg)
 
             socket.broadcast.emit('show-typer', 'user', socket.myTopic)
         })
@@ -87,26 +106,13 @@ function connectSockets(http, session) {
             socket.broadcast.emit('show-typer', user)
             // gIo.emit('show-typer', user)
         })
-
-        // socket.on('spaceView', spaceId => {
-        //     console.log(spaceId);
-        //     console.log(socket.myTopic, '****');
-        //     if (gSpaceViews[spaceId]) gSpaceViews[spaceId] = gSpaceViews[spaceId] + 1
-        //     else gSpaceViews[spaceId] = 1;
-        //     console.log('someone is viewing this space', gSpaceViews[spaceId], gSpaceViews);
-        //     gIo.emit('viewingSpace', gSpaceViews[spaceId]) //TODO remove this for details page
-        //     // gIo.to(socket.myTopic).emit('viewingSpace', gSpaceViews[spaceId]) //TODO use this one on details page
-        // })
-        socket.on('removeSpaceView', spaceId => {
-            console.log('removing space view', spaceId);
-            gSpaceViews[spaceId] = gSpaceViews[spaceId] - 1
-            gIo.to(socket.myTopic).emit('spaceReviewRemoved')
-        })
-
-
         socket.on('user-watch', userId => {
             socket.join(userId)
         })
+        socket.on('joinChat', function (data) {
+            socket.join(data.user); // We are using room of socket io
+          });
+          gIo.sockets.in('user1@example.com').emit('new_msg', {msg: 'hello'});
     })
 }
     

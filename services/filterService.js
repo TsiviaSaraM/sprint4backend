@@ -30,7 +30,6 @@
   function getAverageReview(space) {
     if (!space.reviews) space.reviews = [] //TODO remove this line once have test data
     if (!space.reviews.length || !space.reviews || space.reviews === []){
-      console.log('reviews', space.reviews);
       return 0;
     } 
     // const reviewSum = space.reviews.reduce((sum, review) => {
