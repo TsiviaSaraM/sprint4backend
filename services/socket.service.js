@@ -55,6 +55,22 @@ function connectSockets(http, session) {
                 gSocketBySessionIdMap[socket.handshake.sessionID] = null
             }
         })
+        socket.on('joinSpacePreview', (spaceId) => {
+            socket.join(spaceId)
+            console.log('joined space', spaceId);
+            console.log(socket.rooms);
+        })
+        socket.on('spaceLiked', spaceId => {
+            console.log('spaceLiked', spaceId);
+            console.log(socket.rooms[spaceId]);
+            gIo.to(spaceId).emit('spaceLiked', spaceId)
+        })
+        socket.on('spaceBooked', spaceId => {
+            console.log('spaceBooked', spaceId);
+            console.log(socket.rooms[spaceId]);
+            gIo.to(spaceId).emit('spaceBooked', spaceId)
+        })
+
         socket.on('joinChat', (socketId = null) => {
             if (!socketId) socketId = socket.id
             socket.join(socketId)
