@@ -1,0 +1,17 @@
+.review-list {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 1rem;
+  margin-bottom: 4rem;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    // border-bottom: 1px solid black;
+    border-bottom: 1px solid $clr4;
+    bottom: -28px;
+  }
+}

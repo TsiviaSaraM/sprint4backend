@@ -27,6 +27,7 @@ function connectSockets(http, session) {
             console.log('socketid', socket.id); // ojIckSD2jqNzOqIrAGzL
           });
 
+        //emitted when viewer views details page
         socket.on('newViewer', spaceId => {
             //join the room
             console.log('setting chat topic', spaceId, socket.room1);
@@ -46,6 +47,8 @@ function connectSockets(http, session) {
             //send socket id to host
             gIo.emit
         })
+
+        //emitted when viewer leaves details page
         socket.on('removeViewer', spaceId => {
             console.log('spaceId in remove********', spaceId);
             gSpaceViews[spaceId] = gSpaceViews[spaceId] - 1
@@ -63,7 +66,8 @@ function connectSockets(http, session) {
         socket.on('spaceLiked', spaceId => {
             console.log('spaceLiked', spaceId);
             console.log(socket.rooms[spaceId]);
-            gIo.to(spaceId).emit('spaceLiked', spaceId)
+            // gIo.in(spaceId).emit('spaceLiked', spaceId);//includes sender
+            gIo.to(spaceId).emit('spaceLiked', spaceId);//excludes sender
         })
         socket.on('spaceBooked', spaceId => {
             console.log('spaceBooked', spaceId);
@@ -71,7 +75,9 @@ function connectSockets(http, session) {
             gIo.to(spaceId).emit('spaceBooked', spaceId)
         })
 
+
         socket.on('joinChat', (socketId = null) => {
+            console.log('joioned socket');
             if (!socketId) socketId = socket.id
             socket.join(socketId)
             socket.emit('socketId', socketId)
@@ -92,6 +98,12 @@ function connectSockets(http, session) {
             }
         })
         // socket.emit('chat-history', gMsgHistory)
+        socket.on('msgFromGuest', (msg, socketId) => {
+            gIo.to(socketId).emit('msgToHost', msg, socketId);
+        })
+        socket.on('msgToGuest', (msg, socketId) => {
+            gIo.to(socketId).emit('msgToGuest', msg, socketId);
+        })
         socket.on('chat topic', spaceId => {
             console.log('setting chat topic', spaceId);
             if (socket.myTopic === spaceId) return;
@@ -108,13 +120,14 @@ function connectSockets(http, session) {
             gIo.emit('viewingSpace', gSpaceViews[spaceId]) //TODO remove this for details page
             console.log('someone is viewing this space', gSpaceViews[spaceId], gSpaceViews);
         })
-        socket.on('chat newMsg', msg => {
+        socket.on('chat newMsg', (msg, socketId) => {
             // emits to all sockets:
             gIo.emit('chat addMsg', msg)
+            // gIo.to(socketId).emit('chat addMsg', msg);
 
             // emits only to sockets in the same room
             // gIo.to(socket.myTopic).emit('chat addMsg', msg)
-
+            // gIo.to(socketId).emit('show-typer', 'user', socket.myTopic);
             socket.broadcast.emit('show-typer', 'user', socket.myTopic)
         })
         socket.on('typing', user => {
