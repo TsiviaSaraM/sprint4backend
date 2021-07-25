@@ -1,0 +1,27 @@
+.space-reserve {
+  display: flex;
+  flex-direction: column;
+  padding: 25px;
+  border: 1px solid $clr4;
+  border-radius: 15px;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px;
+
+  .space-reserve-details {
+    display: flex;
+    justify-content: space-between;
+
+    .rating {
+      display: flex;
+      gap: 0.4rem;
+
+      .star::before {
+        right: 35px;
+      }
+    }
+  }
+  .space-reserve-form {
+    background-color: lightblue;
+    display: flex;
+    flex-direction: column;
+  }
+}

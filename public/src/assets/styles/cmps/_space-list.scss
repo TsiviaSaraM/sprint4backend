@@ -1,0 +1,197 @@
+.space-list{
+    width: 100%;
+
+    display: grid;
+    row-gap: 32px ;
+    column-gap: 24px;
+    margin-bottom: 32px ;
+//  grid-template-columns: repeat(5, 1fr);
+grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+
+    // list-style: none;
+    // margin: 0;
+    padding: 10px;
+    // gap: 5px;
+
+    .space-preview{
+        padding: 0;
+        border-radius: 12px;
+        position: relative;
+        cursor: pointer;
+
+        &:hover a{
+        text-decoration: none;
+
+        }
+
+        &:hover .buttons{
+            opacity: 1;
+
+        } 
+        // .img-container{
+        .carousel{
+
+            
+            // max-width: 314px;
+            // max-height: 314px;
+            // width: 314px;
+@include aspect-ratio(1, 1);
+// @include aspect-ratio(3, 2);
+// @include aspect-ratio(16, 9);
+margin-bottom: 10px;
+
+        }
+        // .el-icon-collection-tag{
+        svg{
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1;
+            font-size: 27px;
+            color: white;
+            &:hover{
+                transform: scale(1.05);
+                transition: transform 0.1s
+               
+            }
+
+            &:active{
+                transform: scale(1);
+            }
+
+            // fill:black;
+
+            // background-color: black;
+            // :hover{
+            //     fill:brown
+            // }
+        }
+        .buttons{
+            padding: 5px;
+            z-index: 1;
+            opacity: 0;
+            width: 100%;
+            height: fit-content;
+            position: absolute;
+            top: 50% ;
+            // left: 50%;
+            transform: translateY(-50%);
+            // transform: translate(-50%,-50%);
+            display: flex;
+            justify-content: space-between;
+
+            
+            button{
+                background-color: whitesmoke;
+                border:0px solid black;
+                width: 27px;
+                height: 27px;
+            border-radius: 3rem;
+            padding: 0;
+            text-align: center;
+            cursor: pointer;
+            opacity: 95%;
+
+            i{font-weight: 700;}
+
+            box-shadow: 1px 8px 20px 0px rgba(0,0,0,0.4);
+            -webkit-box-shadow: 1px 8px 20px 0px rgba(0,0,0,0.4);
+            -moz-box-shadow: 1px 8px 20px 0px rgba(0,0,0,0.4);
+
+            &:hover{
+                background-color: white;
+                box-shadow: none;
+                transform: scale(1.05);
+                transition: transform 0.1s, box-shadow 0.1s, background-color 0.1s
+               
+            }
+            &:active{
+                transform: scale(1);
+            }
+                
+            }
+
+        }
+
+        img{
+            // el-carousel-item{
+        border-radius: 12px;
+        border:0.5px solid rgba(0, 0, 0, 0.205);
+            // display: block;
+            // object-fit: cover;
+            width: 100%;
+
+            // max-width: 314px;
+            // height: 314px;
+            // width: auto;
+            // height: auto;
+
+            // object-fit: cover;
+            // width: 100%;
+            // height: 314px;
+            
+            // margin-bottom: 10px;
+            
+            
+          }
+        .name-price{
+            justify-content: space-between;
+            color: #222222;
+            // font-size: 1rem;
+            // line-height: 20px;
+            margin-bottom: 2px;
+
+
+            & div:first-child{
+                // font-weight:600;
+                // color:#717171;
+            // color: #222222;
+
+                font-family: 'cereal-Medium';
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+            & div:last-child{
+                font-family: 'cereal-Book';
+
+                margin-left: 0.5rem;
+                font-weight: 400;
+                white-space: nowrap;
+
+
+            }
+
+            
+        }
+        .distance{
+            font-family: 'cereal-Book';
+
+         color: rgb(113, 113, 113)     
+     } 
+    }
+}
+
+@mixin aspect-ratio($width, $height) {
+    position: relative;
+    overflow: hidden;
+    &:before {
+      content: "";
+      display: block;
+      width: 100%;
+      padding-top: ($height / $width) * 100%;
+    }
+    // > * {
+    > * {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      > img {
+      // > el-carousel-item >img {
+        height: 100%;
+        object-fit: cover;
+      }
+    }  
+  }

@@ -1,0 +1,31 @@
+.space-imgs {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 165px 165px;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+
+  & :first-child {
+    grid-column: 1 / span 2;
+    grid-row: 1 / span 2;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+  }
+  &.pics-5 img {
+    &:nth-child(3) {
+      border-top-right-radius: 15px;
+    }
+
+    &:last-child {
+      border-bottom-right-radius: 15px;
+    }
+  }
+  > img {
+    object-fit: cover;
+    border-radius: 0;
+    width: 100%;
+    height: 100%;
+  }
+}

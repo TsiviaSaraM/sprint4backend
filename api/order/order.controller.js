@@ -53,6 +53,26 @@ async function updateOrder(req, res) {
     logger.error('Failed to update order', err);
     res.status(500).send({ err: 'Failed to update order' });
   }
+  try {
+    await orderService.remove(req.params.id);
+    res.send({ msg: 'Deleted successfully' });
+  } catch (err) {
+    logger.error('Failed to delete order', req.params.id, err);
+    res.status(500).send({ err: 'Failed to delete order' });
+  }
+}
+
+async function updateOrder(req, res) {
+  try {
+    const order = req.body;
+    const savedOrder = await orderService.update(order);
+    res.send(savedOrder);
+    // socketService.broadcast({type: 'order-updated', data: order, to:savedOrder._id})
+    // return savedOrder
+  } catch (err) {
+    logger.error('Failed to update order', err);
+    res.status(500).send({ err: 'Failed to update order' });
+  }
 }
 
 async function addOrder(req, res) {
@@ -62,31 +82,32 @@ async function addOrder(req, res) {
     res.send(savedOrder);
     // socketService.broadcast({type: 'order-updated', data: order, to:savedOrder._id})
   } catch (err) {
-    logger.error('Failed to update order', err);
+    logger.error('Failed to update order', err, req.body);
     res.status(500).send({ err: 'Failed to update order' });
   }
 }
 
-async function addReview() {
-  try {
-    var review = req.body;
-    review.byUserId = req.session.user._id;
-    review = await orderService.addReview(review);
+// async function addOrder(){
+//     try {
+//         var order = req.body
+//         order.byUserId = req.session.user._id
+//         order = await orderService.addOrder(order)
 
-    // prepare the updated review for sending out
-    review.byUser = await userService.getById(review.byUserId);
-    review.aboutUser = await userService.getById(review.aboutUserId);
+//         // prepare the updated order for sending out
+//         order.byUser = await userService.getById(order.byUserId)
+//         order.aboutUser = await userService.getById(order.aboutUserId)
 
-    console.log('CTRL SessionId:', req.sessionID);
-    // socketService.broadcast({type: 'review-added', data: review})
-    // socketService.emitToAll({type: 'user-updated', data: review.byUser, room: req.session.user._id})
-    res.send(review);
-  } catch (err) {
-    console.log(err);
-    logger.error('Failed to add review', err);
-    res.status(500).send({ err: 'Failed to add review' });
-  }
-}
+//         console.log('CTRL SessionId:', req.sessionID);
+//         // socketService.broadcast({type: 'order-added', data: order})
+//         // socketService.emitToAll({type: 'user-updated', data: order.byUser, room: req.session.user._id})
+//         res.send(order)
+
+//     } catch (err) {
+//         console.log(err)
+//         logger.error('Failed to add order', err)
+//         res.status(500).send({ err: 'Failed to add order' })
+//     }
+// }
 
 module.exports = {
   getOrder,
@@ -94,5 +115,5 @@ module.exports = {
   deleteOrder,
   updateOrder,
   addOrder,
-  addReview,
+  addOrder,
 };

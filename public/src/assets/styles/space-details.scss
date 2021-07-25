@@ -1,0 +1,307 @@
+.space-details {
+  font-family: cereal-regular;
+  .space-title-primary {
+    font-size: 1.625rem;
+    margin: 0;
+    margin-bottom: 12px;
+    color: $clr2;
+  }
+
+  .space-title-secondary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+    color: $clr3;
+    .left-part {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+
+      .rating {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .total-rate {
+          color: $clr2;
+          font-weight: 600;
+        }
+
+        position: relative;
+
+        &::before {
+          font-family: 'awesome-solid';
+          content: '\f005';
+          color: $clr1;
+          position: absolute;
+          right: 90px;
+        }
+      }
+    }
+
+    .save-space {
+      display: flex;
+      align-items: center;
+      position: relative;
+      &::before {
+        font-family: 'awesome-light';
+        content: '\f004';
+        position: absolute;
+        right: 35px;
+      }
+    }
+  }
+
+  .space-description-container {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.3rem;
+
+    .space-description-wrap {
+      grid-column: span 2;
+
+      .space-description-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        position: relative;
+
+        &::before {
+          content: '';
+          position: absolute;
+          width: 100%;
+          top: 42px;
+          border-bottom: 1px solid $clr4;
+        }
+
+        .title-sentence {
+          font-weight: 700;
+          font-size: 1.375rem;
+        }
+
+        .avatar {
+          width: 35px;
+          height: 35px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+      }
+
+      .space-description {
+        line-height: 1.5em;
+        margin-bottom: 2rem;
+        position: relative;
+
+        &::before {
+          content: '';
+          position: absolute;
+          width: 100%;
+          border-bottom: 1px solid $clr4;
+          bottom: -15px;
+        }
+      }
+
+      .ameneties-title {
+        font-size: 1.375rem;
+        font-family: cereal-Bold;
+      }
+
+      .space-ameneties-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
+        row-gap: 0.4rem;
+        margin-bottom: 2rem;
+        position: relative;
+
+        .amenity-item {
+          text-transform: capitalize;
+          padding-left: 25px;
+          position: relative;
+
+          &.tv::before {
+            content: '\f26c';
+            font-family: 'awesome-light';
+            position: absolute;
+            left: 0px;
+            top: 3px;
+          }
+
+          &.wifi::before {
+            content: '\f1eb';
+            font-family: 'awesome-light';
+            position: absolute;
+            left: 0px;
+            top: 3px;
+          }
+
+          &.bath::before {
+            content: '\f2cd';
+            font-family: 'awesome-light';
+            position: absolute;
+            left: 0px;
+            top: 3px;
+          }
+
+          &.kitchen::before {
+            content: '\f2e7';
+            font-family: 'awesome-light';
+            position: absolute;
+            left: 0px;
+            top: 3px;
+          }
+
+          &.free-parking::before {
+            content: '\f540';
+            font-family: 'awesome-light';
+            position: absolute;
+            left: 0px;
+            top: 3px;
+          }
+
+          &.washing-machine::before {
+            content: '\f898';
+            font-family: 'awesome-light';
+            position: absolute;
+            left: 0px;
+            top: 3px;
+          }
+          &.smoke-alarm::before {
+            content: '\f7e4';
+            font-family: 'awesome-light';
+            position: absolute;
+            left: 0px;
+            top: 3px;
+          }
+          &.lockbox::before {
+            content: '\f023';
+            font-family: 'awesome-light';
+            position: absolute;
+            left: 0px;
+            top: 3px;
+          }
+          &.air-conditioning::before {
+            content: '\f8f4';
+            font-family: 'awesome-light';
+            position: absolute;
+            left: 0px;
+            top: 3px;
+          }
+          &.security-cameras::before {
+            content: '\f8ac';
+            font-family: 'awesome-light';
+            position: absolute;
+            left: 0px;
+            top: 3px;
+          }
+        }
+
+        &::before {
+          content: '';
+          position: absolute;
+          width: 100%;
+          border-bottom: 1px solid $clr4;
+          bottom: -15px;
+        }
+      }
+    }
+  }
+
+  .reviews-container {
+    .rating {
+      display: flex;
+      margin-bottom: 1rem;
+      font-size: 1.375rem;
+      font-family: 'cereal-Medium';
+      margin-left: 25px;
+    }
+
+    .rate-categories-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      row-gap: 1rem;
+      column-gap: 5rem;
+      margin-bottom: 2rem;
+
+      .rate-categories-item {
+        text-transform: capitalize;
+        display: flex;
+        justify-content: space-between;
+
+        .box {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+
+          .category-bar-container {
+            display: flex;
+
+            width: 120px;
+            height: 4px;
+            border-radius: 100px;
+            background-color: $clr4;
+
+            .category-bar {
+              background-color: #000;
+              border-radius: 100px;
+            }
+          }
+
+          .category-rate {
+            font-size: 0.75rem;
+            font-family: 'cereal-Medium';
+          }
+        }
+      }
+    }
+  }
+
+  .map-container {
+    .map-title {
+      font-family: 'cereal-Medium';
+      font-size: 1.375rem;
+    }
+  }
+
+  .star {
+    display: flex;
+    align-items: center;
+    position: relative;
+    &::before {
+      font-family: 'awesome-solid';
+      font-size: 0.875rem;
+      content: '\f005';
+      color: $clr1;
+      position: absolute;
+      right: 50px;
+    }
+  }
+}
+
+// <div class="reviews-container">
+//   <div class="rating">
+//     <p class="total-rate">{{ totalRate }}</p>
+//     <span>•</span>
+//     <p class="number-reviews">{{ numOfReviews }} reviews</p>
+//   </div>
+//   <ul class="rate-categories-list clear-list">
+//     <li
+//       class="rate-categories-item"
+//       v-for="(r, c, idx) in categoryRate"
+//       :key="idx"
+//     >
+//       <div class="category-title">{{ c }}:</div>
+//       <div class="box">
+//         <div class="category-bar-container">
+//           <div class="category-bar"></div>
+//         </div>
+//         <div class="category-rate">{{ r }}</div>
+//       </div>
+//     </li>
+//   </ul>
+//   <review-list :reviews="space.reviews"></review-list>
+// </div>

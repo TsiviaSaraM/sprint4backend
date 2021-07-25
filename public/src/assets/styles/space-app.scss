@@ -1,0 +1,82 @@
+// grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+// grid-auto-rows: 300px;
+// grid-auto-flow: dense;
+
+
+// .liked{
+//     // display: none;
+//     fill:rgb(255, 3, 3)
+
+// }
+
+
+
+
+
+
+
+.space-app{
+
+    box-sizing: border-box;
+    // background-color: lightsteelblue;
+    display: flex;
+    flex-direction: column;
+    // align-items: center;
+    // justify-content: center;
+    // align-items: center;
+
+
+
+    .nav-filter{
+        // box-shadow: black 0px 6px 16px ;
+        box-shadow: 0px 8px 10px 0px rgba(0,0,0,0.1);
+-webkit-box-shadow: 0px 8px 10px 0px rgba(0,0,0,0.1);
+-moz-box-shadow: 0px 8px 10px 0px rgba(0,0,0,0.1);
+
+        background-color: rgb(255, 255, 255);
+        z-index: 2;
+        position: sticky;
+        top: 0;
+        display: flex;
+        justify-content: space-between;
+    align-items: center;
+
+        padding: 20px;
+    }
+
+   
+}
+
+
+
+
+
+// .card {
+//     @include aspect-ratio(1, 1);
+// }
+
+
+//aspect ratio mixin
+// @mixin aspect-ratio($width, $height) {
+//     position: relative;
+//     overflow: hidden;
+//     &:before {
+//       content: "";
+//       display: block;
+//       width: 100%;
+//       padding-top: ($height / $width) * 100%;
+//     }
+//     > * {
+//       position: absolute;
+//       top: 0;
+//       left: 0;
+//       right: 0;
+//       bottom: 0;
+//     }  
+//     > img {
+//     // > el-carousel-item >img {
+//       height: 100%;
+//       object-fit: cover;
+//     }
+//   }
+

@@ -1,0 +1,91 @@
+$clr-form-btn: #e31a5e;
+$clt-txt-btn: white;
+$clr-form-input-border: #b0b0b0;
+$clr-form-text: #222222;
+
+$form-border-radius: 10px;
+
+
+.popup-form{
+    // width: 571px;
+    // height: 700px;
+    padding: 25px; 
+    color: $clr-form-text;
+    border: 1px solid $clr-form-input-border;
+    // transform: translate(-50%, -50%);
+    border-radius: $form-border-radius;
+    z-index: 1;
+    background-color: white;
+    .label-container{
+        display: flex;
+        flex-direction: column;
+    }
+    input{
+        border: $clr-form-input-border;
+        border: 1px solid $clr-form-input-border;
+    }
+    .num-input{
+        height: 55px;
+        width: 60px;
+        border-radius: $form-border-radius;
+        margin-bottom: 18px;
+    }
+    button, .text-input{
+        height: 55px;
+        width: 100%;
+        border-radius: $form-border-radius;
+        margin-bottom: 18px;
+    
+    }
+    button{
+        background-color: $clr-form-btn;
+        color: $clt-txt-btn;
+        min-width: 200px;
+    background-size: 200% 200%;
+    transition: opacity 1.25s ease 0s;
+    background-image: radial-gradient(circle at center center, rgb(255, 56, 92) 0%, rgb(230, 30, 77) 27.5%, rgb(227, 28, 95) 40%, rgb(215, 4, 102) 57.5%, rgb(189, 30, 89) 75%, rgb(189, 30, 89) 100%);
+    background-position: calc((100 - var(--mouse-x, 0)) * 1%) calc((100 - var(--mouse-y, 0)) * 1%);
+    border:none;
+    }
+    
+}
+
+.space-edit-add{
+    .popup-form{
+        width: 80%;
+        margin: auto;
+        .amenities, .type{
+            flex: 1;
+        }
+    }
+    button, input{
+        max-width: 503px;
+        // margin: auto;
+    }
+
+ 
+  
+}
+
+.login{
+    // width: 571px;
+    // height: 700px;
+    // padding: 25px; 
+    // color: $clr-form-text;
+    border: 1px solid $clr-form-input-border;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    //for mob layout
+
+    width: 80vw;
+
+    @include for-wide-layout {
+        width: 571px;
+        height: 700px;
+    }
+    // z-index: 1;
+    // background-color: white;
+}
