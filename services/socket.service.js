@@ -28,23 +28,30 @@ function connectSockets(http, session) {
           });
 
         //emitted when viewer views details page
-        socket.on('newViewer', ({spaceId, hostId}) => { //TODO et host join spaceId room also 
-            //join the room
-            if (socket.room1 === spaceId) return;
-            if (socket.room1) {
-                socket.leave(socket.room1)
-            }
+        socket.on('newViewer', ({spaceId, hostId, isSpaceHost}) => { //TODO et host join spaceId room also 
+            console.log('newViewer.......', spaceId, hostId, isSpaceHost);
             socket.join(spaceId) //for #viewers
-            console.log('setting chat topic********', spaceId, hostId, socket.id);
-            
-
             socket.join(hostId)//for chat
-            gIo.in(hostId).emit('newChat', socket.id);//sent to host and self
-            socket.leave(hostId)
-            socket.join(socket.id + '1')
+            
+            //if you host this space, add listener for sockedIds, ie join hostId
+            if (isSpaceHost){
+                // gIo.to(hostId).emit('listenForGuests', socket.id);
+            }else {//otherwise send socket to host
+                // socket.join(socket.id + '1')
+                gIo.in(hostId).emit('joinSocket', socket.id);
+                socket.leave(hostId)
+            }
+
+            // if (isSpaceHost) gIo.in(hostId).emit('joinSocket', socket.id);//sent to host and self
+            // else{
+                
+                
+                //send socket id to host
+            // }
+            // gIo.to(hostId).emit('joinSocket', socket.id)
 
 
-            console.log('newChat', socket.id);
+            // console.log('newChat', socket.id);
             // console.log('setting chat topic', spaceId);
 
             //set spaceViews count
@@ -53,12 +60,10 @@ function connectSockets(http, session) {
             // gIo.emit('updateViewerCount', gSpaceViews[spaceId] + ' users are viewing this space', socket.id) 
             gIo.to(spaceId).emit('updateViewerCount', gSpaceViews[spaceId] + ' users are viewing this space') 
 
-            //send socket id to host
-            gIo.to(hostId).emit('socketId', socket.id+'1')
         })
         socket.on('joinHostRoom', hostId => {
             console.log('a host joined', hostId);
-            socket.join(hostId)//for chat
+            socket.join(hostId)//for dashboard, maybe also use in chat
         })
         socket.on('joinSocketId', socketId => {
             socket.join(socketId+'1')
@@ -85,10 +90,11 @@ function connectSockets(http, session) {
             // gIo.in(spaceId).emit('spaceLiked', spaceId);//includes sender
             gIo.to(spaceId).emit('spaceLiked', spaceId);//excludes sender
         })
-        socket.on('spaceBooked', spaceId => {
-            console.log('spaceBooked', spaceId);
-            console.log(socket.rooms[spaceId]);
-            gIo.to(spaceId).emit('spaceBooked', spaceId)
+        socket.on('newOrder', order => {
+            const spaceId = order.stay._id;
+            const hostId = order.hostId
+            gIo.to(spaceId).emit('orderSaved', spaceId)
+            gIo.to(hostId).emit('orderSaved', order)
         })
 
 
@@ -104,9 +110,9 @@ function connectSockets(http, session) {
             gIo.emit('receive-msg',msg)
         })
 
-        socket.on('newOrder', socket => {
-            socket.emit('newOrder', )
-        })
+        // socket.on('newOrder', socket => {
+        //     socket.emit('newOrder')
+        // })
         socket.on('disconnect', socket => {
             console.log('Someone disconnected', socket)
             if (socket.handshake) {
@@ -148,7 +154,7 @@ function connectSockets(http, session) {
             gIo.to(socketId+'1').emit('show-typer', 'user', socket.myTopic)
         })
         socket.on('typing',( {user, socketId}) => {
-            console.log(user);
+            console.log('typing', user, socketId);
             // gIo.to(socketId+'1').emit('show-typer', user) //TODO change to in or so only sends to other person
             socket.broadcast.to(socketId+'1').emit('show-typer', user);
         })
