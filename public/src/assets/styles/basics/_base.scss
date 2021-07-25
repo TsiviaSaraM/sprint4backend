@@ -33,7 +33,17 @@ footer {
 
 p {
   margin: 0 0 1em;
-  max-width: 40ch;
+  // max-width: 40ch;
+  @include for-mobile-layout {
+   
+  }
+  @include for-narrow-layout {
+  }
+  @include for-normal-layout {
+    max-width: 40ch;
+  }
+  @include for-wide-layout {
+  }
 }
 
 a {
