@@ -61,11 +61,12 @@ async function update(order) {
     try {
         // peek only updatable fields!
         let orderToSave = order
+        console.log('update order in service***', {...orderToSave});
         const collection = await dbService.getCollection('order')
         await collection.updateOne({ '_id': order._id }, { $set: {...orderToSave} })
         return order;
     } catch (err) {
-        logger.error(`cannot update order ${order._id}`, err)
+        logger.error(`cannot update order ${order._id} in service`, err)
         throw err
     }
 }

@@ -62,10 +62,11 @@ function connectSockets(http, session) {
 
         })
         socket.on('joinHostRoom', hostId => {
-            console.log('a host joined', hostId);
+            console.log('joinHostRoom', hostId);
             socket.join(hostId)//for dashboard, maybe also use in chat
         })
         socket.on('joinSocketId', socketId => {
+            console.log('*******');
             socket.join(socketId+'1')
         })
         //emitted when viewer leaves details page
@@ -79,22 +80,25 @@ function connectSockets(http, session) {
                 gSocketBySessionIdMap[socket.handshake.sessionID] = null
             }
         })
-        socket.on('joinSpacePreview', (spaceId) => {
+        socket.on('joinSpacePreview', spaceId => {
+            console.log('joinSpacePreview joined space', spaceId);
             socket.join(spaceId)
-            console.log('joined space', spaceId);
             console.log(socket.rooms);
         })
-        socket.on('spaceLiked', spaceId => {
-            console.log('spaceLiked', spaceId);
-            console.log(socket.rooms[spaceId]);
+        socket.on('likeSpace', spaceId => {
+            console.log('likeSpace', spaceId);
+            // console.log(socket.rooms[spaceId]);
             // gIo.in(spaceId).emit('spaceLiked', spaceId);//includes sender
             gIo.to(spaceId).emit('spaceLiked', spaceId);//excludes sender
         })
         socket.on('newOrder', order => {
             const spaceId = order.stay._id;
             const hostId = order.hostId
+            console.log('newOrder');
             gIo.to(spaceId).emit('orderSaved', spaceId)
+            // socket.join(hostId)
             gIo.to(hostId).emit('orderSaved', order)
+            // socket.leave(hostId)
         })
 
 
