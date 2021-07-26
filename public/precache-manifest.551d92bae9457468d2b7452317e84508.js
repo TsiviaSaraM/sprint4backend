@@ -16,8 +16,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/babel.config.js"
   },
   {
-    "revision": "4740a6a217ef11eec2e7",
-    "url": "/css/app.6bbd9061.css"
+    "revision": "366265934c59b0f6cd9c536b521d3461",
+    "url": "/bacon.svg"
+  },
+  {
+    "revision": "d6e987b7b13880536795",
+    "url": "/css/app.e024791e.css"
   },
   {
     "revision": "108eb032e08b316b3e0b",
@@ -92,7 +96,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/img/user.04017ce7.svg"
   },
   {
-    "revision": "f1216cce3f29127d3b2f9a420db7a914",
+    "revision": "3d85761d47caf3de60f9533da30c5960",
     "url": "/index.html"
   },
   {
@@ -100,8 +104,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/jest.config.js"
   },
   {
-    "revision": "4740a6a217ef11eec2e7",
-    "url": "/js/app.ce4118a4.js"
+    "revision": "d6e987b7b13880536795",
+    "url": "/js/app.5797f213.js"
   },
   {
     "revision": "108eb032e08b316b3e0b",
