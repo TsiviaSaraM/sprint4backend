@@ -96,7 +96,7 @@ function connectSockets(http, session) {
             const hostId = order.hostId
             console.log('newOrder');
             gIo.to(spaceId).emit('orderSaved', spaceId)
-            gIo.emit('newOrder', order)
+            gIo.emit('orderSaved', order) //TODO remove after tues
             // socket.join(hostId)
             // gIo.to(hostId).emit('orderSaved', order)//TODO uncomment this after tues
             // socket.leave(hostId)
