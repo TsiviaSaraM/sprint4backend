@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/bacon.svg"
   },
   {
-    "revision": "400cf7fc651c498c9583",
-    "url": "/css/app.cf949f4d.css"
+    "revision": "ca830819c41ed1027829",
+    "url": "/css/app.85da8f0d.css"
   },
   {
     "revision": "108eb032e08b316b3e0b",
@@ -96,7 +96,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/img/user.04017ce7.svg"
   },
   {
-    "revision": "917dffa00878f1ead7cc2d8920dc2bb7",
+    "revision": "ea338320ea15d30c301b6627275b0d7f",
     "url": "/index.html"
   },
   {
@@ -104,8 +104,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/jest.config.js"
   },
   {
-    "revision": "400cf7fc651c498c9583",
-    "url": "/js/app.05095b9e.js"
+    "revision": "ca830819c41ed1027829",
+    "url": "/js/app.6149b4e0.js"
   },
   {
     "revision": "108eb032e08b316b3e0b",
