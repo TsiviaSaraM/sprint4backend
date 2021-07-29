@@ -15,8 +15,6 @@ module.exports = {
   // addMsg,
 };
 
-
-
 async function query(filterBy = {}) {
   const criteria = _buildCriteria(filterBy);
   try {
@@ -24,8 +22,8 @@ async function query(filterBy = {}) {
     var spaces = await collection.find(criteria).toArray();
     spaces = spaces.sort((space1, space2) => {
       return (
-        filterService.getAverageReview(space2) -
-        filterService.getAverageReview(space1)
+        getAverageReview(space2) -
+        getAverageReview(space1)
       );
     });
 
@@ -38,9 +36,10 @@ async function query(filterBy = {}) {
     // news.loc={}
     // news.loc.country = space.loc.country
     // news.loc.address = space.loc.address
-    news._id = space._id
+    // news._id = space._id
     news.host = space.host._id
-    news.reviews = space.reviews.length
+    // news.reviewRate = getAverageReview(space)
+    // news.reviews = space.reviews.map(review => review.rate)
     // space.description = 'describe'
     // space.imgUrls = [],
     // space.amenities = {}
@@ -49,7 +48,6 @@ async function query(filterBy = {}) {
     news.name = space.name
         return news
     })
-
     return spaces;
   } catch (err) {
     logger.error('cannot find spaces', err);
@@ -152,24 +150,24 @@ async function add(space) {
   }
 }
 
-function _buildCriteria(filterBy) {
-  const criteria = {};
-  if (filterBy.txt) {
-    const txtCriteria = { $regex: filterBy.txt, $options: 'i' };
-    criteria.$or = [
-      {
-        spacename: txtCriteria,
-      },
-      {
-        fullname: txtCriteria,
-      },
-    ];
-  }
-  if (filterBy.minBalance) {
-    criteria.balance = { $gte: filterBy.minBalance };
-  }
-  return criteria;
-}
+// function _buildCriteria(filterBy) {
+//   const criteria = {};
+//   if (filterBy.txt) {
+//     const txtCriteria = { $regex: filterBy.txt, $options: 'i' };
+//     criteria.$or = [
+//       {
+//         spacename: txtCriteria,
+//       },
+//       {
+//         fullname: txtCriteria,
+//       },
+//     ];
+//   }
+//   if (filterBy.minBalance) {
+//     criteria.balance = { $gte: filterBy.minBalance };
+//   }
+//   return criteria;
+// }
 
 // async function addMsg(spaceId, msg){
 //     try {
@@ -221,4 +219,22 @@ function _buildCriteria(filterBy) {
   }
   // return { capacity: { '$gte': 0 } }
   return criteria;
+}
+
+
+//TODO move these to filterService
+function getAverageReview(space) {
+  if (!space.reviews || !space.reviews.length) return 0
+  const reviewSum = space.reviews.reduce((sum, review) => {
+    return sum + _getReviewRate(review)
+  },0)
+  return reviewSum / space.reviews.length
+  
+}
+
+function _getReviewRate(review) {
+  if (!Object.keys(review.rate) || !Object.keys(review.rate).length) return 0
+  const rates = review.rate;
+  const totalRates = Object.values(rates).reduce((sum, rate) => sum + rate)
+  return totalRates / Object.values(rates).length // or '/ 6'
 }

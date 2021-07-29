@@ -14,11 +14,16 @@ module.exports = {
 }
 
 async function query(filterBy = {}) {
+    
     const criteria = _buildCriteria(filterBy)
     try {
         const collection = await dbService.getCollection('order')
         var orders = await collection.find(criteria).toArray()
         // var orders = await collection.find({$query: criteria, $orderby:{capacity: 1}}).toArray()
+        orders = orders.map(order => {
+            return order
+            return order.hostId
+        })
         return orders
     } catch (err) {
         logger.error('cannot find orders', err)
@@ -118,7 +123,12 @@ async function addMsg(orderId, msg){
 
 //not using here because there is only 1 filter field in use
 function _buildCriteria(filterBy) {
-    return {}
+    // filterBy.hostId = '60fd09e0d6c8fcb17416507b'
+    let criteria = {};
+    if (filterBy.hostId){
+        criteria['hostId'] = filterBy.hostId
+    }
+    return criteria
  }
 
 
